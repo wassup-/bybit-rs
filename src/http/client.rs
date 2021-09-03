@@ -2,6 +2,10 @@ use super::{Query, Response, Result, SignedQuery};
 use reqwest::Url;
 use serde::{de::DeserializeOwned, Serialize};
 
+pub const MAINNET_BYBIT: &str = "https://api.bybit.com/";
+pub const MAINNET_BYTICK: &str = "https://api.bytick.com/";
+pub const TESTNET: &str = "https://api-testnet.bybit.com/";
+
 pub struct Client {
     api_key: String,
     api_secret: String,
@@ -10,27 +14,16 @@ pub struct Client {
 }
 
 impl Client {
-    /// Create a new mainnet client.
+    /// Create a new client.
+    /// * `base_url` - The base url.
     /// * `api_key` - The API key.
     /// * `api_secret` - The API secret.
-    pub fn new(api_key: &str, api_secret: &str) -> Self {
+    pub fn new(base_url: &str, api_key: &str, api_secret: &str) -> Self {
         Client {
             api_key: api_key.to_owned(),
             api_secret: api_secret.to_owned(),
             client: reqwest::Client::new(),
-            base_url: Url::parse("https://api.bybit.com/").unwrap(),
-        }
-    }
-
-    /// Create a new testnet client.
-    /// * `api_key` - The API key.
-    /// * `api_secret` - The API secret.
-    pub fn test(api_key: &str, api_secret: &str) -> Self {
-        Client {
-            api_key: api_key.to_owned(),
-            api_secret: api_secret.to_owned(),
-            client: reqwest::Client::new(),
-            base_url: Url::parse("https://api-testnet.bybit.com/").unwrap(),
+            base_url: Url::parse(base_url).unwrap(),
         }
     }
 
@@ -73,7 +66,7 @@ mod tests {
     use super::*;
     #[test]
     fn new() {
-        let client = Client::new("key", "secret");
+        let client = Client::new(MAINNET_BYBIT, "key", "secret");
         assert_eq!(client.api_key, "key");
         assert_eq!(client.api_secret, "secret");
         assert_eq!(client.base_url.host_str(), Some("api.bybit.com"));
@@ -81,7 +74,7 @@ mod tests {
 
     #[test]
     fn test() {
-        let client = Client::test("key", "secret");
+        let client = Client::new(TESTNET, "key", "secret");
         assert_eq!(client.api_key, "key");
         assert_eq!(client.api_secret, "secret");
         assert_eq!(client.base_url.host_str(), Some("api-testnet.bybit.com"));

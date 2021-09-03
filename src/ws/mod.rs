@@ -1,10 +1,12 @@
+mod channel;
 mod client;
 mod error;
-mod query;
+mod message;
 mod response;
 mod sign;
+pub use channel::*;
 pub use client::*;
 pub use error::*;
-pub use query::*;
+pub use message::*;
 pub use response::*;
 pub use sign::*;

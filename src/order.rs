@@ -7,6 +7,9 @@ pub struct OrderId(String);
 #[derive(Serialize, Deserialize, Clone, Debug, Eq, PartialEq)]
 pub struct OrderLinkId(String);
 
+#[derive(Serialize, Deserialize, Clone, Debug, Eq, PartialEq)]
+pub struct ExecId(String);
+
 #[derive(Serialize, Deserialize, Copy, Clone, Debug, Eq, PartialEq)]
 pub enum Side {
     Buy,
@@ -227,6 +230,12 @@ impl std::fmt::Display for OrderId {
 }
 
 impl std::fmt::Display for OrderLinkId {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl std::fmt::Display for ExecId {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.0)
     }
