@@ -85,8 +85,8 @@ impl Client {
             }
         }
 
-        self.subscribe_or_unsubscribe(&channels, true).await?;
-        self.channels.extend_from_slice(&channels);
+        self.subscribe_or_unsubscribe(channels, true).await?;
+        self.channels.extend_from_slice(channels);
 
         Ok(())
     }
@@ -100,7 +100,7 @@ impl Client {
             }
         }
 
-        self.subscribe_or_unsubscribe(&channels, false).await?;
+        self.subscribe_or_unsubscribe(channels, false).await?;
         self.channels.retain(|c| !channels.contains(c));
 
         Ok(())
