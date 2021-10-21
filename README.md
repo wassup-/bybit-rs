@@ -40,6 +40,65 @@ async fn create_order() -> Result<Order> {
 ## Status
 
 bybit-rs is still under active development. This means that until this library reaches version 1.0.0, things are prone to break and/or change.
+We're doing our best to quickly implement most of the API functionality provided by Bybit, however not all of the functionality may have been properly tested yet.
+Please do not hesitate to open an issue if you run into any problems, errors, ... (see [Contributing](#contributing)).
+
+### Endpoints / Features
+
+#### HTTP
+
+##### Market Data Endpoints
+- [ ] order book
+- [ ] query kline
+- [x] latest information for symbol (tickers)
+- [ ] public trading records
+- [x] query symbol
+- [ ] query mark price kline
+- [ ] query index price kline
+- [ ] query premium index kline
+- [ ] advanced data
+
+##### Account Data Endpoints
+- [x] place active order (**incomplete**)
+- [x] get active order
+- [x] cancel active order
+- [ ] cancel all active orders
+- [x] replace active order (**incomplete**)
+- [x] query active order (real-time)
+- [ ] conditional orders
+- [ ] position
+- [ ] risk limit
+- [ ] funding
+- [ ] API key info
+- [ ] LCP info
+
+##### Wallet Data Endpoints
+- [x] get wallet balance
+- [ ] wallet fund records
+- [ ] withdraw records
+- [ ] asset exchange records
+
+##### API Data Endpoints
+- [ ] server time
+- [ ] announcement
+
+#### WebSocket
+
+##### Public Topics
+- [x] orderbook snapshot
+- [x] orderbook delta
+- [x] trade
+- [x] insurance
+- [x] instrument info snapshot
+- [x] instrument info delta
+- [x] kline v2
+- [ ] liquidation
+
+##### Private Topics
+- [x] position
+- [x] execution
+- [x] order
+- [x] stop order
 
 ## Contributing
 
