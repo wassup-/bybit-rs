@@ -1,6 +1,6 @@
 use crate::{
-    http::{Client, NoQuery, Query, Response},
-    Result, Wallet, Wallets,
+    http::{Client, NoQuery, Query, Response, Result},
+    Wallet, Wallets,
 };
 use async_trait::async_trait;
 
@@ -23,7 +23,7 @@ impl FetchWallets for Client {
         let query = NoQuery::new();
         let query = self.sign_query(query);
         let response: Response<Wallets> = self.get("/v2/private/wallet/balance", &query).await?;
-        Ok(response.result.unwrap_or_default())
+        response.result()
     }
 }
 
@@ -35,7 +35,7 @@ impl FetchWallet for Client {
         };
         let query = self.sign_query(query);
         let response: Response<Wallets> = self.get("/v2/private/wallet/balance", &query).await?;
-        Ok(response.result.unwrap_or_default().get(currency).cloned())
+        response.result().map(|res| res.get(currency).cloned())
     }
 }
 

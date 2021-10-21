@@ -4,7 +4,8 @@ pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug)]
 pub enum Error {
-    Transport(reqwest::Error),
+    Url(url::ParseError),
+    Reqwest(reqwest::Error),
     ErrorCode(ErrorCode),
 }
 
@@ -12,20 +13,41 @@ pub enum Error {
 pub struct ErrorCode {
     pub code: i64,
     pub msg: String,
+    pub ext_code: String,
+    pub ext_info: String,
+}
+
+impl From<url::ParseError> for Error {
+    fn from(err: url::ParseError) -> Self {
+        Self::Url(err)
+    }
 }
 
 impl From<reqwest::Error> for Error {
     fn from(err: reqwest::Error) -> Self {
-        Self::Transport(err)
+        Self::Reqwest(err)
+    }
+}
+
+impl From<ErrorCode> for Error {
+    fn from(code: ErrorCode) -> Self {
+        Self::ErrorCode(code)
     }
 }
 
 impl<T> From<Response<T>> for Error {
     fn from(res: Response<T>) -> Self {
-        let code = ErrorCode {
+        Self::ErrorCode(res.into())
+    }
+}
+
+impl<T> From<Response<T>> for ErrorCode {
+    fn from(res: Response<T>) -> Self {
+        Self {
             code: res.ret_code,
             msg: res.ret_msg,
-        };
-        Self::ErrorCode(code)
+            ext_code: res.ext_code,
+            ext_info: res.ext_info,
+        }
     }
 }

@@ -19,6 +19,7 @@ include = [
 futures-util = "*"
 tungstenite = "0.14"
 serde_json = "*"
+url = "*"
 
 [dependencies.reqwest]
 version = "0.11"

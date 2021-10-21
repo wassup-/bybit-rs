@@ -1,6 +1,7 @@
-use crate::http::{Client, Query, Response};
-use crate::order::*;
-use crate::{Error, Result};
+use crate::{
+    http::{Client, Query, Response, Result},
+    order::*,
+};
 use async_trait::async_trait;
 use serde::Serialize;
 
@@ -102,7 +103,7 @@ impl ListOrders for Client {
         let query = self.sign_query(query);
         let response: Response<response::ListOrders> =
             self.get("/v2/private/order/list", &query).await?;
-        Ok(response.result.unwrap().orders)
+        response.result().map(|res| res.orders)
     }
 }
 
@@ -119,7 +120,7 @@ impl CreateOrders for Client {
         };
         let query = self.sign_query(query);
         let response: Response<Order> = self.post("/v2/private/order/create", &query).await?;
-        Ok(response.result.unwrap())
+        response.result()
     }
 }
 
@@ -138,12 +139,7 @@ impl UpdateOrders for Client {
         let query = self.sign_query(query);
         let response: Response<response::UpdateOrder> =
             self.post("/v2/private/order/replace", &query).await?;
-
-        if let Some(res) = response.result {
-            return Ok(res.order_id);
-        } else {
-            return Err(Error::Http(response.into()));
-        }
+        response.result().map(|res| res.order_id)
     }
 }
 

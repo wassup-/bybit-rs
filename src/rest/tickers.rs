@@ -1,6 +1,6 @@
 use crate::{
-    http::{Client, Query, Response},
-    Result, Tickers,
+    http::{Client, Query, Response, Result},
+    Tickers,
 };
 use async_trait::async_trait;
 
@@ -18,7 +18,7 @@ impl FetchTickers for Client {
             symbol: symbol.to_owned(),
         };
         let response: Response<Tickers> = self.get("/v2/public/tickers", &query).await?;
-        Ok(response.result.unwrap_or_default())
+        response.result()
     }
 }
 

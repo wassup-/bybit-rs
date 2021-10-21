@@ -1,6 +1,6 @@
 use crate::{
-    http::{Client, Query, Response},
-    Result, Symbols,
+    http::{Client, Query, Response, Result},
+    Symbols,
 };
 use async_trait::async_trait;
 
@@ -15,7 +15,7 @@ impl FetchSymbols for Client {
     async fn fetch_symbols(&self) -> Result<Symbols> {
         let query = query::Symbols;
         let response: Response<Symbols> = self.get("/v2/public/symbols", &query).await?;
-        Ok(response.result.unwrap_or_default())
+        response.result()
     }
 }
 
