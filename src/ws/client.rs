@@ -67,6 +67,15 @@ impl Client {
         Ok(())
     }
 
+    /// Disconnect the client.
+    pub async fn disconnect(&mut self) -> Result<()> {
+        let message = Message::Close(None);
+        // TODO: should we do proper error handling here?
+        let _res = self.send(message).await;
+        self.stream = None;
+        Ok(())
+    }
+
     /// Subscribe to the given channels.
     /// - `channels` - The channels to subscribe to.
     pub async fn subscribe(&mut self, channels: &[Channel]) -> Result<()> {
@@ -185,6 +194,9 @@ impl Client {
                         if let Message::Text(text) = msg {
                             let response: Response = serde_json::from_str(&text)?;
                             return Ok(response)
+                        } else if let Message::Close(_) = msg {
+                            self.stream = None;
+                            return Err(Error::NotConnected)
                         }
                     }
                 }
