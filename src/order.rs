@@ -155,6 +155,19 @@ pub enum Sort {
 #[serde(transparent)]
 pub struct UserId(i64);
 
+#[derive(Serialize, Deserialize, Copy, Clone, Debug, Eq, PartialEq)]
+#[serde(transparent)]
+pub struct LiquidatedOrderId(i64);
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct LiquidatedOrder {
+    pub id: LiquidatedOrderId,
+    pub symbol: String,
+    pub side: Side,
+    pub qty: f64,
+    pub price: f64,
+}
+
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Order {
     /// Unique order id
@@ -236,6 +249,12 @@ impl std::fmt::Display for OrderLinkId {
 }
 
 impl std::fmt::Display for ExecId {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl std::fmt::Display for LiquidatedOrderId {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.0)
     }
