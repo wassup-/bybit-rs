@@ -20,13 +20,17 @@ git = "https://github.com/wassup-/bybit-rs.git"
 ## Usage
 
 ```rs
-use bybit::rest::{self, *};
-use bybit::{http::Client, Order, OrderType, Result, Side, TimeInForce};
+use bybit::{
+    http::{self, Client, Result},
+    rest::{self, *},
+    Order, OrderType, Side, TimeInForce,
+};
 
 async fn create_order() -> Result<Order> {
-    let client = Client::new(api_key, api_secret);
+    // safe to unwrap because we know the url is valid
+    let client = Client::new(http::MAINNET_BYBIT, "api key", "api secret").unwrap();
     let data = rest::CreateOrderData {
-        symbol: "BTCUSD",
+        symbol: "BTCUSD".to_string(),
         side: Side::Sell,
         qty: 10,
         price: 45420.0,
