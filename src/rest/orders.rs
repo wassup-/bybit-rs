@@ -92,7 +92,8 @@ pub trait UpdateOrders {
 
 #[async_trait]
 pub trait CancelOrders {
-    async fn cancel_order(&self, active_order_id: ActiveOrderId, symbol: &str) -> Result<()>;
+    async fn cancel_active_order(&self, active_order_id: ActiveOrderId, symbol: &str)
+        -> Result<()>;
     async fn cancel_all_active_orders(&self, symbol: &str) -> Result<Vec<OrderId>>;
 }
 
@@ -147,7 +148,11 @@ impl UpdateOrders for Client {
 
 #[async_trait]
 impl CancelOrders for Client {
-    async fn cancel_order(&self, active_order_id: ActiveOrderId, symbol: &str) -> Result<()> {
+    async fn cancel_active_order(
+        &self,
+        active_order_id: ActiveOrderId,
+        symbol: &str,
+    ) -> Result<()> {
         let query = request::CancelOrder {
             active_order_id,
             symbol: symbol.to_owned(),
