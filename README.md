@@ -83,7 +83,7 @@ Please do not hesitate to open an issue if you run into any problems, errors, ..
 - [ ] asset exchange records
 
 ##### API Data Endpoints
-- [ ] server time
+- [x] server time
 - [x] announcement
 
 #### WebSocket

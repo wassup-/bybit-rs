@@ -1,6 +1,12 @@
 use super::Result;
 use serde::Deserialize;
 
+#[derive(Deserialize)]
+pub struct Ignore {
+    #[serde(skip)]
+    phantom: std::marker::PhantomData<()>,
+}
+
 #[derive(Deserialize, Debug, Clone)]
 pub struct Response<T> {
     pub result: Option<T>,
