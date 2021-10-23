@@ -52,7 +52,7 @@ impl From<OrderLinkId> for ActiveOrderId {
 pub struct CreateOrderData {
     pub symbol: String,
     pub side: Side,
-    pub qty: i64,
+    pub qty: f64,
     pub price: f64,
     pub order_type: OrderType,
     pub time_in_force: TimeInForce,
@@ -188,7 +188,7 @@ mod request {
     pub struct CreateOrder {
         pub symbol: String,
         pub side: Side,
-        pub qty: i64,
+        pub qty: f64,
         pub price: f64,
         pub order_type: OrderType,
         pub time_in_force: TimeInForce,

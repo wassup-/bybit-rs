@@ -182,7 +182,7 @@ pub struct Order {
     #[serde(deserialize_with = "string_or_number")]
     pub price: f64,
     /// Order quantity in USD.
-    pub qty: i64,
+    pub qty: f64,
     /// Symbol
     pub symbol: String,
     /// Side

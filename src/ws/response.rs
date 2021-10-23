@@ -303,7 +303,7 @@ pub struct Order {
     pub order_type: OrderType,
     #[serde(deserialize_with = "string_or_number")]
     pub price: f64,
-    pub qty: i64,
+    pub qty: f64,
     pub time_in_force: TimeInForce,
     pub create_type: Option<CreateType>,
     pub cancel_type: Option<CancelType>,
@@ -345,7 +345,7 @@ pub struct StopOrder {
     pub order_type: OrderType,
     #[serde(deserialize_with = "string_or_number")]
     pub price: f64,
-    pub qty: i64,
+    pub qty: f64,
     pub time_in_force: TimeInForce,
     pub create_type: CreateType,
     pub cancel_type: CancelType,
