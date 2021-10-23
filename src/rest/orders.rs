@@ -6,7 +6,7 @@ use async_trait::async_trait;
 use serde::Serialize;
 
 #[derive(Serialize, Clone, Debug, Default)]
-pub struct ListOrdersFilter {
+pub struct ListActiveOrdersFilter {
     pub symbol: String,
     pub order_status: Option<OrderStatus>,
     pub direction: Option<String>,
@@ -72,8 +72,8 @@ pub struct UpdateOrderData {
 }
 
 #[async_trait]
-pub trait ListOrders {
-    async fn list_orders(&self, filter: ListOrdersFilter) -> Result<Vec<Order>>;
+pub trait ListActiveOrders {
+    async fn list_orders(&self, filter: ListActiveOrdersFilter) -> Result<Vec<Order>>;
 }
 
 #[async_trait]
@@ -105,11 +105,11 @@ pub trait QueryActiveOrder {
 }
 
 #[async_trait]
-impl ListOrders for Client {
-    async fn list_orders(&self, filter: ListOrdersFilter) -> Result<Vec<Order>> {
-        let query = request::ListOrders { filter };
+impl ListActiveOrders for Client {
+    async fn list_orders(&self, filter: ListActiveOrdersFilter) -> Result<Vec<Order>> {
+        let query = request::ListActiveOrders { filter };
         let query = self.sign_query(query);
-        let response: Response<response::ListOrders> =
+        let response: Response<response::ListActiveOrders> =
             self.get("/v2/private/order/list", &query).await?;
         response.result().map(|res| res.orders)
     }
@@ -181,8 +181,8 @@ mod request {
 
     #[derive(Serialize)]
     #[serde(transparent)]
-    pub struct ListOrders {
-        pub filter: ListOrdersFilter,
+    pub struct ListActiveOrders {
+        pub filter: ListActiveOrdersFilter,
     }
 
     #[derive(Serialize)]
@@ -225,7 +225,7 @@ mod request {
         pub symbol: String,
     }
 
-    impl Query for ListOrders {}
+    impl Query for ListActiveOrders {}
     impl Query for CreateOrder {}
     impl Query for UpdateOrder {}
     impl Query for CancelOrder {}
@@ -257,7 +257,7 @@ mod response {
     use serde::Deserialize;
 
     #[derive(Deserialize)]
-    pub struct ListOrders {
+    pub struct ListActiveOrders {
         #[serde(rename = "data")]
         pub orders: Vec<Order>,
     }
