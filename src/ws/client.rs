@@ -11,12 +11,12 @@ use tokio::net::TcpStream;
 use tokio::time::{self, Interval};
 use tokio_tungstenite::{connect_async, MaybeTlsStream, WebSocketStream};
 
-pub const TESTNET: &str = "stream-testnet.bybit.com";
-pub const MAINNET_BYBIT: &str = "stream.bybit.com";
-pub const MAINNET_BYTICK: &str = "stream.bytick.com";
+pub const TESTNET: &str = "wss://stream-testnet.bybit.com/realtime";
+pub const MAINNET_BYBIT: &str = "wss://stream.bybit.com/realtime";
+pub const MAINNET_BYTICK: &str = "wss://stream.bytick.com/realtime";
 
 pub struct Client {
-    hostname: String,
+    base_url: String,
     api_key: String,
     api_secret: String,
     stream: Option<WebSocketStream<MaybeTlsStream<TcpStream>>>,
@@ -27,12 +27,12 @@ pub struct Client {
 
 impl Client {
     /// Create a new websocket client.
-    /// - `hostname` - The hostname to connect to.
+    /// - `base_url` - The base url to connect to.
     /// - `api_key` - The api key used for authentication.
     /// - `api_secret` - The api secret used for authentication.
-    pub fn new(hostname: &str, api_key: &str, api_secret: &str) -> Self {
+    pub fn new(base_url: &str, api_key: &str, api_secret: &str) -> Self {
         Self {
-            hostname: hostname.to_owned(),
+            base_url: base_url.to_owned(),
             api_key: api_key.to_owned(),
             api_secret: api_secret.to_owned(),
             stream: None,
@@ -57,8 +57,8 @@ impl Client {
         let expires = (Utc::now() + Duration::seconds(2)).timestamp_millis();
         let signature = sign(expires, &self.api_secret);
         let url = format!(
-            "wss://{}/realtime?api_key={}&expires={}&signature={}",
-            self.hostname, self.api_key, expires, signature
+            "{}?api_key={}&expires={}&signature={}",
+            self.base_url, self.api_key, expires, signature
         );
 
         let (stream, _) = connect_async(url).await?;

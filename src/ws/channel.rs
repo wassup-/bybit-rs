@@ -5,7 +5,7 @@ pub enum Channel {
     OrderBook200(String),
     Trade,
     Insurance,
-    InstrumentInfo(String, i64),
+    InstrumentInfo(String),
     KlineV2(String, String),
 
     // Private
