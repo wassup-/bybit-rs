@@ -1,3 +1,4 @@
+mod announcement;
 mod contract;
 mod deserialize;
 mod error;
@@ -11,6 +12,7 @@ mod ticker;
 mod trade;
 mod wallet;
 pub mod ws;
+pub use announcement::*;
 pub use contract::*;
 pub use error::*;
 pub use filter::*;

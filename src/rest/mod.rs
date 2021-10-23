@@ -1,8 +1,10 @@
+mod announcements;
 mod liquidations;
 mod orders;
 mod symbols;
 mod tickers;
 mod wallets;
+pub use announcements::*;
 pub use liquidations::*;
 pub use orders::*;
 pub use symbols::*;

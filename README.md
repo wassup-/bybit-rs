@@ -84,7 +84,7 @@ Please do not hesitate to open an issue if you run into any problems, errors, ..
 
 ##### API Data Endpoints
 - [ ] server time
-- [ ] announcement
+- [x] announcement
 
 #### WebSocket
 
