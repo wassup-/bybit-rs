@@ -43,7 +43,7 @@ impl<T> From<Response<T>> for Error {
 
 impl<T> From<Response<T>> for ErrorCode {
     fn from(res: Response<T>) -> Self {
-        Self {
+        ErrorCode {
             code: res.ret_code,
             msg: res.ret_msg,
             ext_code: res.ext_code,

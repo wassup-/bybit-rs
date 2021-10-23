@@ -31,7 +31,7 @@ impl Client {
     /// - `api_key` - The api key used for authentication.
     /// - `api_secret` - The api secret used for authentication.
     pub fn new(base_url: &str, api_key: &str, api_secret: &str) -> Self {
-        Self {
+        Client {
             base_url: base_url.to_owned(),
             api_key: api_key.to_owned(),
             api_secret: api_secret.to_owned(),

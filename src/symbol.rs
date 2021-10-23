@@ -49,7 +49,7 @@ impl Symbol {
     /// Create a symbol with the given name.
     /// * `name` - The name of the symbol.
     pub fn new(name: &str) -> Self {
-        Self {
+        Symbol {
             name: name.to_owned(),
             ..Default::default()
         }

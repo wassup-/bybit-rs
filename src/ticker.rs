@@ -79,7 +79,7 @@ pub struct Tickers {
 
 impl Tickers {
     pub fn new(tickers: &[Ticker]) -> Self {
-        Self {
+        Tickers {
             tickers: tickers.into(),
         }
     }

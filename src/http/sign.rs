@@ -13,7 +13,7 @@ impl<T: Serialize + Sized> Signed<T> {
 
         let query = params.join("&");
         let signature = crate::sign(&query, secret);
-        Self { payload, signature }
+        Signed { payload, signature }
     }
 }
 

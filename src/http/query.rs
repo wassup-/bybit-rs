@@ -47,7 +47,7 @@ struct Payload<Q: Query> {
 
 impl<Q: Query> From<Signed<Payload<Q>>> for SignedQuery<Q> {
     fn from(signed: Signed<Payload<Q>>) -> Self {
-        Self {
+        SignedQuery {
             query: signed.payload.query,
             timestamp: signed.payload.timestamp,
             api_key: signed.payload.api_key,
@@ -60,13 +60,13 @@ impl Query for NoQuery {}
 
 impl NoQuery {
     pub fn new() -> Self {
-        Self { data: PhantomData }
+        NoQuery { data: PhantomData }
     }
 }
 
 impl Default for NoQuery {
     fn default() -> Self {
-        Self::new()
+        NoQuery::new()
     }
 }
 
