@@ -42,7 +42,13 @@ impl Client {
         query: &Q,
     ) -> Result<Response<T>> {
         let url = self.base_url.join(path)?;
-        let response = self.client.get(url).query(query).send().await?;
+        let response = self
+            .client
+            .get(url)
+            .query(query)
+            .send()
+            .await?
+            .error_for_status()?;
         let result = response.json::<Response<T>>().await?;
         Ok(result)
     }
@@ -56,7 +62,13 @@ impl Client {
         query: &Q,
     ) -> Result<Response<T>> {
         let url = self.base_url.join(path)?;
-        let response = self.client.post(url).json(query).send().await?;
+        let response = self
+            .client
+            .post(url)
+            .json(query)
+            .send()
+            .await?
+            .error_for_status()?;
         let result = response.json::<Response<T>>().await?;
         Ok(result)
     }
