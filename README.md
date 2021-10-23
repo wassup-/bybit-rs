@@ -96,7 +96,7 @@ Please do not hesitate to open an issue if you run into any problems, errors, ..
 - [x] instrument info snapshot
 - [x] instrument info delta
 - [x] kline v2
-- [ ] liquidation
+- [x] liquidation
 
 ##### Private Topics
 - [x] position

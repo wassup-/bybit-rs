@@ -15,6 +15,7 @@ pub enum Data {
     InstrumentInfoSnapshot(InstrumentInfoSnapshot),
     InstrumentInfoDelta(InstrumentInfoDeltaData),
     KlineV2(KlineV2),
+    Liquidation(Liquidation),
     Position(Position),
     Execution(Execution),
     Order(Order),
@@ -363,6 +364,24 @@ pub(super) struct StopOrderResponse {
     pub data: Vec<StopOrder>,
 }
 
+#[derive(Deserialize, Debug, Clone)]
+#[serde(deny_unknown_fields)]
+pub struct Liquidation {
+    pub symbol: String,
+    pub side: Side,
+    #[serde(deserialize_with = "string_or_number")]
+    pub price: f64,
+    #[serde(deserialize_with = "string_or_number")]
+    pub qty: f64,
+    pub time: i64,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+pub(super) struct LiquidationResponse {
+    pub topic: String,
+    pub data: Liquidation,
+}
+
 #[derive(Deserialize, Debug)]
 #[serde(untagged)]
 pub(super) enum Response {
@@ -374,6 +393,7 @@ pub(super) enum Response {
     InstrumentInfoSnapshot(InstrumentInfoSnapshotResponse),
     InstrumentInfoDelta(InstrumentInfoDeltaResponse),
     KlineV2(KlineV2Response),
+    Liquidation(LiquidationResponse),
     Position(PositionResponse),
     Execution(ExecutionResponse),
     Order(OrderResponse),

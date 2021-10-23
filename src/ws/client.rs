@@ -225,6 +225,7 @@ impl Client {
                 self.buf.push_back(Data::InstrumentInfoDelta(res.data))
             }
             Response::KlineV2(res) => self.buf.extend(res.data.into_iter().map(Data::KlineV2)),
+            Response::Liquidation(res) => self.buf.push_back(Data::Liquidation(res.data)),
             Response::Position(res) => self.buf.extend(res.data.into_iter().map(Data::Position)),
             Response::Execution(res) => self.buf.extend(res.data.into_iter().map(Data::Execution)),
             Response::Order(res) => self.buf.extend(res.data.into_iter().map(Data::Order)),

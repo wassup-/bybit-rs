@@ -7,6 +7,7 @@ pub enum Channel {
     Insurance,
     InstrumentInfo(String),
     KlineV2(String, String),
+    Liquidation,
 
     // Private
     Position,
