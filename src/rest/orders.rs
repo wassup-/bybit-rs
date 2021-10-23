@@ -49,13 +49,21 @@ impl From<OrderLinkId> for ActiveOrderId {
     }
 }
 
-pub struct CreateOrderData {
+#[derive(Default)]
+pub struct PlaceActiveOrderData {
     pub symbol: String,
     pub side: Side,
     pub qty: f64,
-    pub price: f64,
     pub order_type: OrderType,
+    pub price: Option<f64>,
     pub time_in_force: TimeInForce,
+    pub close_on_trigger: Option<bool>,
+    pub order_link_id: Option<OrderLinkId>,
+    pub take_profit: Option<f64>,
+    pub stop_loss: Option<f64>,
+    pub tp_trigger_by: Option<TriggerPrice>,
+    pub sl_trigger_by: Option<TriggerPrice>,
+    pub reduce_only: Option<bool>,
 }
 
 pub struct UpdateOrderData {
@@ -69,8 +77,8 @@ pub trait ListOrders {
 }
 
 #[async_trait]
-pub trait CreateOrders {
-    async fn create_order(&self, data: CreateOrderData) -> Result<Order>;
+pub trait PlaceActiveOrder {
+    async fn place_active_order(&self, data: PlaceActiveOrderData) -> Result<Order>;
 }
 
 #[async_trait]
@@ -108,16 +116,9 @@ impl ListOrders for Client {
 }
 
 #[async_trait]
-impl CreateOrders for Client {
-    async fn create_order(&self, data: CreateOrderData) -> Result<Order> {
-        let query = request::CreateOrder {
-            symbol: data.symbol,
-            side: data.side,
-            qty: data.qty,
-            price: data.price,
-            order_type: data.order_type,
-            time_in_force: data.time_in_force,
-        };
+impl PlaceActiveOrder for Client {
+    async fn place_active_order(&self, data: PlaceActiveOrderData) -> Result<Order> {
+        let query: request::CreateOrder = data.into();
         let query = self.sign_query(query);
         let response: Response<Order> = self.post("/v2/private/order/create", &query).await?;
         response.result()
@@ -175,7 +176,7 @@ impl QueryActiveOrder for Client {
 }
 
 mod request {
-    use super::{ActiveOrderId, ListOrdersFilter, OrderType, Query, Side, TimeInForce};
+    use super::*;
     use serde::Serialize;
 
     #[derive(Serialize)]
@@ -189,9 +190,16 @@ mod request {
         pub symbol: String,
         pub side: Side,
         pub qty: f64,
-        pub price: f64,
         pub order_type: OrderType,
+        pub price: Option<f64>,
         pub time_in_force: TimeInForce,
+        pub close_on_trigger: Option<bool>,
+        pub order_link_id: Option<OrderLinkId>,
+        pub take_profit: Option<f64>,
+        pub stop_loss: Option<f64>,
+        pub tp_trigger_by: Option<TriggerPrice>,
+        pub sl_trigger_by: Option<TriggerPrice>,
+        pub reduce_only: Option<bool>,
     }
 
     #[derive(Serialize)]
@@ -222,6 +230,26 @@ mod request {
     impl Query for UpdateOrder {}
     impl Query for CancelOrder {}
     impl Query for QueryActiveOrder {}
+
+    impl From<PlaceActiveOrderData> for CreateOrder {
+        fn from(data: PlaceActiveOrderData) -> Self {
+            CreateOrder {
+                symbol: data.symbol,
+                side: data.side,
+                qty: data.qty,
+                order_type: data.order_type,
+                price: data.price,
+                time_in_force: data.time_in_force,
+                close_on_trigger: data.close_on_trigger,
+                order_link_id: data.order_link_id,
+                take_profit: data.take_profit,
+                stop_loss: data.stop_loss,
+                tp_trigger_by: data.tp_trigger_by,
+                sl_trigger_by: data.sl_trigger_by,
+                reduce_only: data.reduce_only,
+            }
+        }
+    }
 }
 
 mod response {

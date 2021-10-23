@@ -259,3 +259,21 @@ impl std::fmt::Display for LiquidatedOrderId {
         write!(f, "{}", self.0)
     }
 }
+
+impl Default for Side {
+    fn default() -> Self {
+        Side::Buy
+    }
+}
+
+impl Default for OrderType {
+    fn default() -> Self {
+        OrderType::Market
+    }
+}
+
+impl Default for TimeInForce {
+    fn default() -> Self {
+        TimeInForce::GoodTillCancel
+    }
+}

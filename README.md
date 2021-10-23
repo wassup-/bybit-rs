@@ -63,7 +63,7 @@ Please do not hesitate to open an issue if you run into any problems, errors, ..
 - [ ] advanced data
 
 ##### Account Data Endpoints
-- [x] place active order (**incomplete**)
+- [x] place active order
 - [x] get active order
 - [x] cancel active order
 - [ ] cancel all active orders
