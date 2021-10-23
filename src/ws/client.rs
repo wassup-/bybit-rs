@@ -152,7 +152,14 @@ impl Client {
                 Channel::Trade => "trade".to_owned(),
                 Channel::Insurance => "insurance".to_owned(),
                 Channel::InstrumentInfo(symbol) => format!("instrument_info.100ms.{}", symbol),
-                Channel::KlineV2(symbol, interval) => format!("klineV2.{}.{}", interval, symbol),
+                Channel::KlineV2(symbol, interval) => {
+                    if Self::is_inverse(symbol) {
+                        format!("klineV2.{}.{}", interval, symbol)
+                    } else {
+                        format!("candle.{}.{}", interval, symbol)
+                    }
+                }
+                Channel::Liquidation => "liquidation".to_owned(),
                 Channel::Position => "position".to_owned(),
                 Channel::Execution => "execution".to_owned(),
                 Channel::Order => "order".to_owned(),
@@ -241,6 +248,10 @@ impl Client {
         }
 
         Ok(None)
+    }
+
+    fn is_inverse(symbol: &str) -> bool {
+        !symbol.ends_with('T')
     }
 }
 
