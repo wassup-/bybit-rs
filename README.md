@@ -66,7 +66,7 @@ Please do not hesitate to open an issue if you run into any problems, errors, ..
 - [x] place active order
 - [x] get active order
 - [x] cancel active order
-- [ ] cancel all active orders
+- [x] cancel all active orders
 - [x] replace active order (**incomplete**)
 - [x] query active order (real-time)
 - [ ] conditional orders

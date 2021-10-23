@@ -93,6 +93,7 @@ pub trait UpdateOrders {
 #[async_trait]
 pub trait CancelOrders {
     async fn cancel_order(&self, active_order_id: ActiveOrderId, symbol: &str) -> Result<()>;
+    async fn cancel_all_active_orders(&self, symbol: &str) -> Result<Vec<OrderId>>;
 }
 
 #[async_trait]
@@ -155,6 +156,21 @@ impl CancelOrders for Client {
         let _response: Response<response::CancelOrder> =
             self.post("/v2/private/order/cancel", &query).await?;
         Ok(())
+    }
+
+    async fn cancel_all_active_orders(&self, symbol: &str) -> Result<Vec<OrderId>> {
+        let query = request::CancelAllOrders {
+            symbol: symbol.to_owned(),
+        };
+        let query = self.sign_query(query);
+        let response: Response<response::CancelAllOrders> =
+            self.post("/v2/private/order/cancelAll", &query).await?;
+        response.result().map(|res| {
+            res.orders
+                .iter()
+                .map(|order| order.cl_ord_id.clone())
+                .collect()
+        })
     }
 }
 
@@ -219,6 +235,11 @@ mod request {
     }
 
     #[derive(Serialize)]
+    pub struct CancelAllOrders {
+        pub symbol: String,
+    }
+
+    #[derive(Serialize)]
     pub struct QueryActiveOrder {
         #[serde(flatten)]
         pub active_order_id: ActiveOrderId,
@@ -229,6 +250,7 @@ mod request {
     impl Query for CreateOrder {}
     impl Query for UpdateOrder {}
     impl Query for CancelOrder {}
+    impl Query for CancelAllOrders {}
     impl Query for QueryActiveOrder {}
 
     impl From<PlaceActiveOrderData> for CreateOrder {
@@ -270,5 +292,17 @@ mod response {
     #[derive(Deserialize)]
     pub struct CancelOrder {
         pub order_id: OrderId,
+    }
+
+    #[derive(Deserialize)]
+    #[serde(transparent)]
+    pub struct CancelAllOrders {
+        pub orders: Vec<CancelledOrder>,
+    }
+
+    #[derive(Deserialize)]
+    pub struct CancelledOrder {
+        #[serde(rename = "clOrdID")]
+        pub cl_ord_id: OrderId,
     }
 }
