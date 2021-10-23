@@ -148,12 +148,10 @@ impl Client {
         'channels: for channel in channels {
             let topic: String = match channel {
                 Channel::OrderBook25(symbol) => format!("orderBookL2_25.{}", symbol),
-                Channel::OrderBook200(symbol) => format!("orderBookL2_200.{}", symbol),
+                Channel::OrderBook200(symbol) => format!("orderBook_200.100ms.{}", symbol),
                 Channel::Trade => "trade".to_owned(),
                 Channel::Insurance => "insurance".to_owned(),
-                Channel::InstrumentInfo(symbol, interval) => {
-                    format!("instrument_info.{}.{}", interval, symbol)
-                }
+                Channel::InstrumentInfo(symbol) => format!("instrument_info.100ms.{}", symbol),
                 Channel::KlineV2(symbol, interval) => format!("klineV2.{}.{}", interval, symbol),
                 Channel::Position => "position".to_owned(),
                 Channel::Execution => "execution".to_owned(),
