@@ -29,15 +29,16 @@ use bybit::{
 async fn create_order() -> Result<Order> {
     // safe to unwrap because we know the url is valid
     let client = Client::new(http::MAINNET_BYBIT, "api key", "api secret").unwrap();
-    let data = rest::CreateOrderData {
+    let data = rest::PlaceActiveOrderData {
         symbol: "BTCUSD".to_string(),
         side: Side::Sell,
-        qty: 10,
-        price: 45420.0,
+        qty: 10.0,
         order_type: OrderType::Limit,
+        price: Some(45420.0),
         time_in_force: TimeInForce::PostOnly,
+        ..Default::default()
     };
-    client.create_order(data).await
+    client.place_active_order(data).await
 }
 ```
 
