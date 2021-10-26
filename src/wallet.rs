@@ -1,8 +1,8 @@
 use crate::{deserialize::string_or_number, UserId};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
-#[derive(Deserialize, Copy, Clone, Debug)]
+#[derive(Serialize, Deserialize, Copy, Clone, Debug)]
 pub enum WalletFundType {
     Deposit,
     Withdraw,
@@ -64,10 +64,10 @@ pub struct WalletFundRecordId(i64);
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct WalletFundRecord {
-    // pub id: WalletFundRecordId,
+    pub id: WalletFundRecordId,
     pub user_id: UserId,
     pub coin: String,
-    // pub wallet_id: WalletId,
+    pub wallet_id: WalletId,
     #[serde(rename = "type")]
     pub fund_type: WalletFundType,
     #[serde(deserialize_with = "string_or_number")]
@@ -85,7 +85,7 @@ pub struct WalletFundRecord {
 pub struct Wallets(BTreeMap<String, Wallet>);
 
 impl Wallets {
-    /// Get the currencies.
+    /// Returns an iterator over the currencies.
     pub fn currencies(&self) -> impl Iterator<Item = &String> {
         self.0.keys()
     }
@@ -100,6 +100,18 @@ impl Wallets {
     /// * `currency` - The currency to find the wallet for.
     pub fn get_mut(&mut self, currency: &str) -> Option<&mut Wallet> {
         self.0.get_mut(currency)
+    }
+}
+
+impl std::fmt::Display for WalletId {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl std::fmt::Display for WalletFundRecordId {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
     }
 }
 

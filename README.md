@@ -79,7 +79,7 @@ Please do not hesitate to open an issue if you run into any problems, errors, ..
 
 ##### Wallet Data Endpoints
 - [x] get wallet balance
-- [ ] wallet fund records
+- [x] wallet fund records
 - [ ] withdraw records
 - [ ] asset exchange records
 
