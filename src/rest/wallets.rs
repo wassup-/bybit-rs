@@ -1,6 +1,6 @@
 use crate::{
     http::{Client, NoQuery, Query, Response, Result},
-    Wallet, WalletFundRecord, WalletFundType, Wallets,
+    Wallet, WalletFundRecord, WalletFundType, WalletWithdrawRecord, Wallets, WithdrawStatus,
 };
 use async_trait::async_trait;
 use serde::Serialize;
@@ -11,6 +11,16 @@ pub struct FetchWalletFundRecordsOptions {
     pub end_date: Option<String>,
     pub currency: Option<String>,
     pub wallet_fund_type: Option<WalletFundType>,
+    pub page: Option<i64>,
+    pub limit: Option<i64>,
+}
+
+#[derive(Default, Serialize)]
+pub struct FetchWalletWithdrawRecordsOptions {
+    pub start_date: Option<String>,
+    pub end_date: Option<String>,
+    pub coin: Option<String>,
+    pub status: Option<WithdrawStatus>,
     pub page: Option<i64>,
     pub limit: Option<i64>,
 }
@@ -36,6 +46,16 @@ pub trait FetchWalletFundRecords {
         &self,
         options: FetchWalletFundRecordsOptions,
     ) -> Result<Vec<WalletFundRecord>>;
+}
+
+#[async_trait]
+pub trait FetchWalletWithdrawRecords {
+    /// Fetch the wallet withdraw records with the given options.
+    /// * `options` - The options for fetching the withdraw records.
+    async fn fetch_wallet_withdraw_records(
+        &self,
+        options: FetchWalletWithdrawRecordsOptions,
+    ) -> Result<Vec<WalletWithdrawRecord>>;
 }
 
 #[async_trait]
@@ -73,7 +93,21 @@ impl FetchWalletFundRecords for Client {
     }
 }
 
+#[async_trait]
+impl FetchWalletWithdrawRecords for Client {
+    async fn fetch_wallet_withdraw_records(
+        &self,
+        options: FetchWalletWithdrawRecordsOptions,
+    ) -> Result<Vec<WalletWithdrawRecord>> {
+        let query = self.sign_query(options);
+        let response: Response<response::WalletWithdrawRecords> =
+            self.get("/v2/private/wallet/withdraw/list", &query).await?;
+        response.result().map(|res| res.data.unwrap_or_default())
+    }
+}
+
 impl Query for FetchWalletFundRecordsOptions {}
+impl Query for FetchWalletWithdrawRecordsOptions {}
 
 mod query {
     use super::Query;
@@ -88,11 +122,16 @@ mod query {
 }
 
 mod response {
-    use super::WalletFundRecord;
+    use super::{WalletFundRecord, WalletWithdrawRecord};
     use serde::Deserialize;
 
     #[derive(Deserialize)]
     pub struct WalletFundRecords {
         pub data: Vec<WalletFundRecord>,
+    }
+
+    #[derive(Deserialize)]
+    pub struct WalletWithdrawRecords {
+        pub data: Option<Vec<WalletWithdrawRecord>>,
     }
 }

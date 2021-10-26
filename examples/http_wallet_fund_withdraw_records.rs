@@ -4,7 +4,7 @@ use bybit::{http, rest::*, Result};
 async fn main() -> Result<()> {
     let args: Vec<String> = std::env::args().collect();
     if args.len() != 3 {
-        println!("usage: cargo run --example http_wallet_fund_records api_key api_secret");
+        println!("usage: cargo run --example http_wallet_fund_withdraw_records api_key api_secret");
         return Ok(());
     }
 
@@ -14,6 +14,7 @@ async fn main() -> Result<()> {
     // safe to unwrap because we know url is valid
     let client = http::Client::new(http::MAINNET_BYBIT, api_key, api_secret).unwrap();
     fund_records(&client).await?;
+    withdraw_records(&client).await?;
 
     Ok(())
 }
@@ -26,6 +27,21 @@ async fn fund_records(client: &http::Client) -> Result<()> {
         ..Default::default()
     };
     let records = client.fetch_wallet_fund_records(options).await?;
+    for record in records.iter() {
+        println!("{:?}", record);
+    }
+
+    Ok(())
+}
+
+async fn withdraw_records(client: &http::Client) -> Result<()> {
+    println!("printing 10 latest wallet withdraw records");
+
+    let options = FetchWalletWithdrawRecordsOptions {
+        limit: Some(10),
+        ..Default::default()
+    };
+    let records = client.fetch_wallet_withdraw_records(options).await?;
     for record in records.iter() {
         println!("{:?}", record);
     }

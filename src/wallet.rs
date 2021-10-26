@@ -15,7 +15,7 @@ pub enum WalletFundType {
     ExchangeOrderDeposit,
 }
 
-#[derive(Deserialize, Copy, Clone, Debug)]
+#[derive(Serialize, Deserialize, Copy, Clone, Debug)]
 pub enum WithdrawStatus {
     ToBeConfirmed,
     UnderReview,
@@ -80,6 +80,25 @@ pub struct WalletFundRecord {
     pub cross_seq: i64,
 }
 
+#[derive(Deserialize, Debug, Copy, Clone)]
+pub struct WalletWithdrawRecordId(i64);
+
+#[derive(Deserialize, Debug, Clone)]
+pub struct WalletWithdrawRecord {
+    pub id: WalletWithdrawRecordId,
+    pub user_id: UserId,
+    pub coin: String,
+    pub status: WithdrawStatus,
+    #[serde(deserialize_with = "string_or_number")]
+    pub amount: f64,
+    #[serde(deserialize_with = "string_or_number")]
+    pub fee: f64,
+    pub address: String,
+    pub tx_id: String,
+    pub submited_at: String,
+    pub updated_at: String,
+}
+
 #[derive(Deserialize, Debug, Clone, Default)]
 #[serde(transparent)]
 pub struct Wallets(BTreeMap<String, Wallet>);
@@ -110,6 +129,12 @@ impl std::fmt::Display for WalletId {
 }
 
 impl std::fmt::Display for WalletFundRecordId {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl std::fmt::Display for WalletWithdrawRecordId {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.0)
     }
