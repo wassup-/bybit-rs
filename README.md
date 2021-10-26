@@ -81,7 +81,7 @@ Please do not hesitate to open an issue if you run into any problems, errors, ..
 - [x] get wallet balance
 - [x] wallet fund records
 - [x] withdraw records
-- [ ] asset exchange records
+- [x] asset exchange records
 
 ##### API Data Endpoints
 - [x] server time

@@ -1,6 +1,7 @@
 use crate::{
     http::{Client, NoQuery, Query, Response, Result},
-    Wallet, WalletFundRecord, WalletFundType, WalletWithdrawRecord, Wallets, WithdrawStatus,
+    AssetExchangeRecord, AssetExchangeRecordId, Wallet, WalletFundRecord, WalletFundType,
+    WalletWithdrawRecord, Wallets, WithdrawStatus,
 };
 use async_trait::async_trait;
 use serde::Serialize;
@@ -23,6 +24,19 @@ pub struct FetchWalletWithdrawRecordsOptions {
     pub status: Option<WithdrawStatus>,
     pub page: Option<i64>,
     pub limit: Option<i64>,
+}
+
+#[derive(Serialize)]
+pub enum Direction {
+    Next,
+    Prev,
+}
+
+#[derive(Default, Serialize)]
+pub struct FetchAssetExchangeRecordsOptions {
+    pub limit: Option<i64>,
+    pub from: Option<AssetExchangeRecordId>,
+    pub direction: Option<Direction>,
 }
 
 #[async_trait]
@@ -56,6 +70,16 @@ pub trait FetchWalletWithdrawRecords {
         &self,
         options: FetchWalletWithdrawRecordsOptions,
     ) -> Result<Vec<WalletWithdrawRecord>>;
+}
+
+#[async_trait]
+pub trait FetchAssetExchangeRecords {
+    /// Fetch the wallet withdraw records with the given options.
+    /// * `options` - The options for fetching the withdraw records.
+    async fn fetch_asset_exchange_records(
+        &self,
+        options: FetchAssetExchangeRecordsOptions,
+    ) -> Result<Vec<AssetExchangeRecord>>;
 }
 
 #[async_trait]
@@ -106,8 +130,22 @@ impl FetchWalletWithdrawRecords for Client {
     }
 }
 
+#[async_trait]
+impl FetchAssetExchangeRecords for Client {
+    async fn fetch_asset_exchange_records(
+        &self,
+        options: FetchAssetExchangeRecordsOptions,
+    ) -> Result<Vec<AssetExchangeRecord>> {
+        let query = self.sign_query(options);
+        let response: Response<Vec<AssetExchangeRecord>> =
+            self.get("/v2/private/exchange-order/list", &query).await?;
+        response.result()
+    }
+}
+
 impl Query for FetchWalletFundRecordsOptions {}
 impl Query for FetchWalletWithdrawRecordsOptions {}
+impl Query for FetchAssetExchangeRecordsOptions {}
 
 mod query {
     use super::Query;

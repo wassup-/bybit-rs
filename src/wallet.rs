@@ -99,6 +99,22 @@ pub struct WalletWithdrawRecord {
     pub updated_at: String,
 }
 
+#[derive(Serialize, Deserialize, Debug, Copy, Clone)]
+#[serde(transparent)]
+pub struct AssetExchangeRecordId(i64);
+
+#[derive(Deserialize, Debug, Clone)]
+pub struct AssetExchangeRecord {
+    pub id: AssetExchangeRecordId,
+    pub exchange_rate: f64,
+    pub from_coin: String,
+    pub to_coin: String,
+    pub to_amount: f64,
+    pub from_fee: f64,
+    pub from_amount: f64,
+    pub created_at: String,
+}
+
 #[derive(Deserialize, Debug, Clone, Default)]
 #[serde(transparent)]
 pub struct Wallets(BTreeMap<String, Wallet>);
@@ -135,6 +151,12 @@ impl std::fmt::Display for WalletFundRecordId {
 }
 
 impl std::fmt::Display for WalletWithdrawRecordId {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl std::fmt::Display for AssetExchangeRecordId {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.0)
     }
