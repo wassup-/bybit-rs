@@ -85,6 +85,11 @@ pub struct WalletFundRecord {
 pub struct Wallets(BTreeMap<String, Wallet>);
 
 impl Wallets {
+    /// Get the currencies.
+    pub fn currencies(&self) -> impl Iterator<Item = &String> {
+        self.0.keys()
+    }
+
     /// Get the wallet for the given currency.
     /// * `currency` - The currency to find the wallet for.
     pub fn get(&self, currency: &str) -> Option<&Wallet> {
