@@ -2,7 +2,7 @@ use super::Response;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Debug)]
+#[derive(Debug, Display)]
 pub enum Error {
     Url(url::ParseError),
     Reqwest(reqwest::Error),
