@@ -24,12 +24,6 @@ impl std::fmt::Display for Error {
     }
 }
 
-impl std::fmt::Display for ErrorCode {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "ErrorCode: {}", self)
-    }
-}
-
 impl From<url::ParseError> for Error {
     fn from(err: url::ParseError) -> Self {
         Self::Url(err)
@@ -51,6 +45,12 @@ impl From<ErrorCode> for Error {
 impl<T> From<Response<T>> for Error {
     fn from(res: Response<T>) -> Self {
         Self::ErrorCode(res.into())
+    }
+}
+
+impl std::fmt::Display for ErrorCode {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "ErrorCode: {}", self)
     }
 }
 

@@ -20,7 +20,7 @@ futures-util = "*"
 tungstenite = "0.14"
 serde_json = "*"
 url = "*"
-thiserror = "1"
+thiserror = "^1"
 
 [dependencies.reqwest]
 version = "0.11"
