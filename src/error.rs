@@ -1,15 +1,18 @@
 use super::{http, ws};
-use thiserror::Error;
+use thiserror::Error as ThisError;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Debug, Error)]
+#[derive(Debug, ThisError)]
 pub enum Error {
-    #[error("Http error: {0}")]
     Http(http::Error),
-
-    #[error("Ws error: {0}")]
     Ws(ws::Error),
+}
+
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "Ws: {}", self.0)
+    }
 }
 
 impl From<http::Error> for Error {

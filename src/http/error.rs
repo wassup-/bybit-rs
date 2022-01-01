@@ -1,21 +1,33 @@
 use super::Response;
-use thiserror::Error;
+use thiserror::Error as ThisError;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Debug, Error)]
+#[derive(Debug, ThisError)]
 pub enum Error {
     Url(url::ParseError),
     Reqwest(reqwest::Error),
     ErrorCode(ErrorCode),
 }
 
-#[derive(Debug, Error)]
+#[derive(Debug, ThisError)]
 pub struct ErrorCode {
     pub code: i64,
     pub msg: String,
     pub ext_code: String,
     pub ext_info: String,
+}
+
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "Error: {}", self.0)
+    }
+}
+
+impl std::fmt::Display for ErrorCode {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "ErrorCode: {}", self.0)
+    }
 }
 
 impl From<url::ParseError> for Error {

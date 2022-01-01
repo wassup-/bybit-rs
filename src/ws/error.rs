@@ -23,7 +23,7 @@ impl From<WsError> for Error {
 
 impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "Bob: {}", self.0)
+        write!(f, "Ws: {}", self.0)
     }
 }
 
