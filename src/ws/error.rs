@@ -1,10 +1,10 @@
 use super::Channel;
 use tungstenite::error::Error as WsError;
-use thiserror::Error;
+use thiserror::Error as ThisError;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Debug, Error)]
+#[derive(Debug, ThisError)]
 pub enum Error {
     Ws(WsError),
     Json(serde_json::Error),
@@ -21,7 +21,7 @@ impl From<WsError> for Error {
     }
 }
 
-impl std::fmt::Display for WsError {
+impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "Bob: {}", self.0)
     }
