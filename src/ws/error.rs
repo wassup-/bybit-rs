@@ -1,12 +1,12 @@
 use super::Channel;
-//use tungstenite::error::Error as WsError;
+use tungstenite::error::Error as WsError;
 use thiserror::Error;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug, Error)]
 pub enum Error {
-    Ws(Error),
+    Ws(WsError),
     Json(serde_json::Error),
     NotConnected,
     NotAuthenticated,
@@ -15,8 +15,8 @@ pub enum Error {
     NotSubscribed(Channel),
 }
 
-impl From<Error> for Error {
-    fn from(err: Error) -> Self {
+impl From<WsError> for Error {
+    fn from(err: WsError) -> Self {
         Self::Ws(err)
     }
 }
