@@ -1,16 +1,11 @@
 use super::Channel;
 use tungstenite::error::Error as WsError;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> f057ff1... added thiserror
-use thiserror::Error;
->>>>>>> f057ff1... added thiserror
+use thiserror::Error as ThisError;
+
 
 pub type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Debug)]
+#[derive(Debug, ThisError)]
 pub enum Error {
     Ws(WsError),
     Json(serde_json::Error),
@@ -21,18 +16,12 @@ pub enum Error {
     NotSubscribed(Channel),
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "Ws: {}", self)
     }
 }
 
-=======
->>>>>>> f057ff1... added thiserror
-=======
->>>>>>> f057ff1... added thiserror
 impl From<WsError> for Error {
     fn from(err: WsError) -> Self {
         Self::Ws(err)

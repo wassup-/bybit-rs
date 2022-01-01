@@ -5,10 +5,14 @@ pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug, ThisError)]
 pub enum Error {
-    #[error("http error: {0}")]
     Http(http::Error),
-    #[error("websocket error: {0}")]
     Ws(ws::Error),
+}
+
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "Error: {}", self)
+    }
 }
 
 impl From<http::Error> for Error {
