@@ -5,7 +5,10 @@ pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug, Error)]
 pub enum Error {
+    #[error("Http error: {0}")]
     Http(http::Error),
+
+    #[error("Ws error: {0}")]
     Ws(ws::Error),
 }
 
