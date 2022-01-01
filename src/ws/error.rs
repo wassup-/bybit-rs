@@ -21,6 +21,11 @@ impl From<WsError> for Error {
     }
 }
 
+impl<T> std::fmt::Display for WsError<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "Bob: {}", self.0)
+    }
+
 impl From<serde_json::Error> for Error {
     fn from(err: serde_json::Error) -> Self {
         Self::Json(err)
