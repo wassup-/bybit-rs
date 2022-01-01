@@ -1,8 +1,9 @@
 use super::{http, ws};
+use thiserror::Error;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum Error {
     Http(http::Error),
     Ws(ws::Error),
