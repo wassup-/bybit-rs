@@ -1,5 +1,5 @@
 use super::Channel;
-use tungstenite::error::Error as WsError;
+//use tungstenite::error::Error as WsError;
 use thiserror::Error;
 
 pub type Result<T> = std::result::Result<T, Error>;
