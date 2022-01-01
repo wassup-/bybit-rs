@@ -17,7 +17,7 @@ include = [
 
 [dependencies]
 futures-util = "*"
-#tungstenite = "0.14"
+tungstenite = "0.14"
 serde_json = "*"
 url = "*"
 thiserror = "1"
