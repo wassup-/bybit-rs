@@ -21,7 +21,7 @@ impl From<WsError> for Error {
     }
 }
 
-impl<T> std::fmt::Display for WsError<T> {
+impl std::fmt::Display for WsError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "Bob: {}", self.0)
     }
