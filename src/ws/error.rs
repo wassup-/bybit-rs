@@ -1,7 +1,10 @@
 use super::Channel;
 use tungstenite::error::Error as WsError;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> f057ff1... added thiserror
 use thiserror::Error;
 >>>>>>> f057ff1... added thiserror
 
@@ -19,12 +22,15 @@ pub enum Error {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "Ws: {}", self)
     }
 }
 
+=======
+>>>>>>> f057ff1... added thiserror
 =======
 >>>>>>> f057ff1... added thiserror
 impl From<WsError> for Error {
