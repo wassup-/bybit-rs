@@ -15,8 +15,8 @@ pub enum Error {
     NotSubscribed(Channel),
 }
 
-impl From<WsError> for Error {
-    fn from(err: WsError) -> Self {
+impl From<Error> for Error {
+    fn from(err: Error) -> Self {
         Self::Ws(err)
     }
 }
