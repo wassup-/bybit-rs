@@ -1,9 +1,10 @@
 use super::Channel;
 use tungstenite::error::Error as WsError;
+use thiserror::Error;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum Error {
     Ws(WsError),
     Json(serde_json::Error),

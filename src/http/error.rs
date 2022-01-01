@@ -1,15 +1,16 @@
 use super::Response;
+use thiserror::Error;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum Error {
     Url(url::ParseError),
     Reqwest(reqwest::Error),
     ErrorCode(ErrorCode),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub struct ErrorCode {
     pub code: i64,
     pub msg: String,
