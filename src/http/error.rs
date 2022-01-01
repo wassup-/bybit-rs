@@ -20,13 +20,13 @@ pub struct ErrorCode {
 
 impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "Error: {}", self.0)
+        write!(f, "Error: {}", self)
     }
 }
 
 impl std::fmt::Display for ErrorCode {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "ErrorCode: {}", self.0)
+        write!(f, "ErrorCode: {}", self)
     }
 }
 
