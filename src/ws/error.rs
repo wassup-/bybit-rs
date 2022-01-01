@@ -1,5 +1,9 @@
 use super::Channel;
 use tungstenite::error::Error as WsError;
+<<<<<<< HEAD
+=======
+use thiserror::Error;
+>>>>>>> f057ff1... added thiserror
 
 pub type Result<T> = std::result::Result<T, Error>;
 
@@ -14,12 +18,15 @@ pub enum Error {
     NotSubscribed(Channel),
 }
 
+<<<<<<< HEAD
 impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "Ws: {}", self)
     }
 }
 
+=======
+>>>>>>> f057ff1... added thiserror
 impl From<WsError> for Error {
     fn from(err: WsError) -> Self {
         Self::Ws(err)
