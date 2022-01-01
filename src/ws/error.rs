@@ -6,7 +6,7 @@ pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug, Error)]
 pub enum Error {
-    Ws(WsError),
+    Ws(Error),
     Json(serde_json::Error),
     NotConnected,
     NotAuthenticated,
