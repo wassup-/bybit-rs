@@ -5,8 +5,11 @@ pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug, ThisError)]
 pub enum Error {
+    #[error("Url ParseError: {0}")]
     Url(url::ParseError),
+    #[error("Reqwest Error: {0}")]
     Reqwest(reqwest::Error),
+    #[error("ErrorCode: {0}")]
     ErrorCode(ErrorCode),
 }
 
@@ -18,11 +21,7 @@ pub struct ErrorCode {
     pub ext_info: String,
 }
 
-impl std::fmt::Display for Error {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self)
-    }
-}
+
 
 impl From<url::ParseError> for Error {
     fn from(err: url::ParseError) -> Self {
