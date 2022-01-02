@@ -50,7 +50,7 @@ impl<T> From<Response<T>> for Error {
 
 impl std::fmt::Display for ErrorCode {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "ErrorCode: {}", self)
+        write!(f, "{}", self)
     }
 }
 
