@@ -9,7 +9,7 @@ pub enum Error {
     Url(url::ParseError),
     #[error("Reqwest Error: {0}")]
     Reqwest(reqwest::Error),
-    #[error("Error Code: {0:?}")]
+    #[error("{0:?}")]
     ErrorCode(ErrorCode),
 }
 
@@ -20,8 +20,6 @@ pub struct ErrorCode {
     pub ext_code: String,
     pub ext_info: String,
 }
-
-
 
 impl From<url::ParseError> for Error {
     fn from(err: url::ParseError) -> Self {

@@ -7,7 +7,7 @@ pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug, ThisError)]
 pub enum Error {
-    #[error("Ws Error: {0}")]
+    #[error("Ws Error: {0:?}")]
     Ws(WsError),
     #[error("Json Error: {0}")]
     Json(serde_json::Error),
@@ -15,11 +15,11 @@ pub enum Error {
     NotConnected,
     #[error("Not Authenticated")]
     NotAuthenticated,
-    #[error("Missing Subscription Confirmation: {0}")]
+    #[error("Missing Subscription Confirmation: {0:?}")]
     MissingSubscriptionConfirmation(Channel),
-    #[error("Subscription Failed: {0}")]
+    #[error("Subscription Failed: {0:?}")]
     SubscriptionFailed(Channel),
-    #[error("Not Subscribed: {0}")]
+    #[error("Not Subscribed: {0:?}")]
     NotSubscribed(Channel),
 }
 
