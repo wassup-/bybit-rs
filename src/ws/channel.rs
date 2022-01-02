@@ -1,4 +1,6 @@
-#[derive(Eq, PartialEq, Clone, Debug)]
+use thiserror::Error as ThisError;
+
+#[derive(Eq, PartialEq, Clone, Debug, ThisError)]
 pub enum Channel {
     // Public
     OrderBook25(String),
@@ -14,6 +16,12 @@ pub enum Channel {
     Execution,
     Order,
     StopOrder,
+}
+
+impl std::fmt::Display for Channel {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self)
+    }
 }
 
 impl Channel {

@@ -7,19 +7,20 @@ pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug, ThisError)]
 pub enum Error {
+    #[error("WsError: {0}")]
     Ws(WsError),
+    #[error("JsonError: {0}")]
     Json(serde_json::Error),
+    #[error("NotConnected")]
     NotConnected,
+    #[error("NotAuthenticated")]
     NotAuthenticated,
+    #[error("MissingSubscriptionConfirmation: {0}")]
     MissingSubscriptionConfirmation(Channel),
+    #[error("SubscriptionFailed: {0}")]
     SubscriptionFailed(Channel),
+    #[error("NotSubscribed: {0}")]
     NotSubscribed(Channel),
-}
-
-impl std::fmt::Display for Error {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, " {}", self)
-    }
 }
 
 impl From<WsError> for Error {
