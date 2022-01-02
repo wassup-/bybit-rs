@@ -11,8 +11,6 @@ pub enum Error {
     Ws(ws::Error),
 }
 
-
-
 impl From<http::Error> for Error {
     fn from(err: http::Error) -> Self {
         Self::Http(err)
