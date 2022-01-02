@@ -9,7 +9,7 @@ pub type Result<T> = std::result::Result<T, Error>;
 pub enum Error {
     #[error("Ws Error: {0:?}")]
     Ws(WsError),
-    #[error("Json Error: {0}")]
+    #[error("Json Error: {0:?}")]
     Json(serde_json::Error),
     #[error("Not Connected")]
     NotConnected,
