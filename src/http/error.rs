@@ -9,7 +9,7 @@ pub enum Error {
     Url(url::ParseError),
     #[error("Reqwest Error: {0}")]
     Reqwest(reqwest::Error),
-    #[error("ErrorCode: {0}")]
+    #[error("Error Code: {0:?}")]
     ErrorCode(ErrorCode),
 }
 
@@ -44,12 +44,6 @@ impl From<ErrorCode> for Error {
 impl<T> From<Response<T>> for Error {
     fn from(res: Response<T>) -> Self {
         Self::ErrorCode(res.into())
-    }
-}
-
-impl std::fmt::Display for ErrorCode {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self)
     }
 }
 
