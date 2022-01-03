@@ -49,7 +49,7 @@ impl From<OrderLinkId> for ActiveOrderId {
     }
 }
 
-#[derive(Default)]
+#[derive(Debug, Default)]
 pub struct PlaceActiveOrderData {
     pub symbol: String,
     pub side: Side,
