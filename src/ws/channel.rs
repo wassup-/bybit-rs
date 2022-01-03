@@ -16,14 +16,6 @@ pub enum Channel {
     StopOrder,
 }
 
-/*
-impl std::fmt::Display for Channel {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{:?}", self)
-    }
-}
-*/
-
 impl Channel {
     /// Returns `true` if this channel requires authentication.
     pub fn requires_authentication(&self) -> bool {
