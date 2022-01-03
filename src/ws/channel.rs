@@ -1,6 +1,4 @@
-use thiserror::Error as ThisError;
-
-#[derive(Eq, PartialEq, Clone, Debug, ThisError)]
+#[derive(Eq, PartialEq, Clone, Debug)]
 pub enum Channel {
     // Public
     OrderBook25(String),
@@ -18,11 +16,13 @@ pub enum Channel {
     StopOrder,
 }
 
+/*
 impl std::fmt::Display for Channel {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "{:?}", self)
     }
 }
+*/
 
 impl Channel {
     /// Returns `true` if this channel requires authentication.
