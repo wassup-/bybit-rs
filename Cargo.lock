@@ -60,6 +60,7 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_urlencoded",
+ "thiserror",
  "tokio",
  "tokio-tungstenite",
  "tungstenite",

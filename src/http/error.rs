@@ -1,11 +1,15 @@
 use super::Response;
+use thiserror::Error as ThisError;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Debug)]
+#[derive(Debug, ThisError)]
 pub enum Error {
+    #[error("Url ParseError: {0}")]
     Url(url::ParseError),
+    #[error("Reqwest Error: {0}")]
     Reqwest(reqwest::Error),
+    #[error("{0:?}")]
     ErrorCode(ErrorCode),
 }
 
