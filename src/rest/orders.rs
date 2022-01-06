@@ -212,14 +212,22 @@ mod request {
         pub side: Side,
         pub qty: f64,
         pub order_type: OrderType,
+        #[serde(skip_serializing_if = "Option::is_none")]
         pub price: Option<f64>,
         pub time_in_force: TimeInForce,
+        #[serde(skip_serializing_if = "Option::is_none")]
         pub close_on_trigger: Option<bool>,
+        #[serde(skip_serializing_if = "Option::is_none")]
         pub order_link_id: Option<OrderLinkId>,
+        #[serde(skip_serializing_if = "Option::is_none")]
         pub take_profit: Option<f64>,
+        #[serde(skip_serializing_if = "Option::is_none")]
         pub stop_loss: Option<f64>,
+        #[serde(skip_serializing_if = "Option::is_none")]
         pub tp_trigger_by: Option<TriggerPrice>,
+        #[serde(skip_serializing_if = "Option::is_none")]
         pub sl_trigger_by: Option<TriggerPrice>,
+        #[serde(skip_serializing_if = "Option::is_none")]
         pub reduce_only: Option<bool>,
     }
 
