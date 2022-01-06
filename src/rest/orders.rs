@@ -57,14 +57,14 @@ pub struct PlaceActiveOrderData {
     pub order_type: OrderType,
     pub price: Option<f64>,
     pub time_in_force: TimeInForce,
-    pub close_on_trigger: bool,
+    pub close_on_trigger: Option<bool>,
     pub order_link_id: Option<OrderLinkId>,
     pub take_profit: Option<f64>,
     pub stop_loss: Option<f64>,
     pub tp_trigger_by: Option<TriggerPrice>,
     pub sl_trigger_by: Option<TriggerPrice>,
-    pub reduce_only: bool,
-    pub position_idx: Option<i32>,
+    pub reduce_only: Option<bool>,
+    pub position_idx: Option<i64>,
 }
 
 pub struct UpdateOrderData {
@@ -232,7 +232,8 @@ mod request {
         #[serde(skip_serializing_if = "Option::is_none")]
         pub price: Option<f64>,
         pub time_in_force: TimeInForce,
-        pub close_on_trigger: bool,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub close_on_trigger: Option<bool>,
         #[serde(skip_serializing_if = "Option::is_none")]
         pub order_link_id: Option<OrderLinkId>,
         #[serde(skip_serializing_if = "Option::is_none")]
@@ -243,9 +244,10 @@ mod request {
         pub tp_trigger_by: Option<TriggerPrice>,
         #[serde(skip_serializing_if = "Option::is_none")]
         pub sl_trigger_by: Option<TriggerPrice>,
-        pub reduce_only: bool,
         #[serde(skip_serializing_if = "Option::is_none")]
-        pub position_idx: Option<i32>,
+        pub reduce_only: Option<bool>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub position_idx: Option<i64>,
     }
 
     #[derive(Serialize)]

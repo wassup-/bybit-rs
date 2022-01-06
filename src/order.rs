@@ -292,7 +292,7 @@ pub struct LinearOrder {
     /// Stop loss trigger price type
     pub sl_trigger_by: TriggerPrice,
     /// Position idx
-    pub position_idx: i32,
+    pub position_idx: i64,
 }
 
 impl std::fmt::Display for OrderId {
