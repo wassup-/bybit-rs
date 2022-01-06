@@ -64,6 +64,7 @@ pub struct PlaceActiveOrderData {
     pub tp_trigger_by: Option<TriggerPrice>,
     pub sl_trigger_by: Option<TriggerPrice>,
     pub reduce_only: Option<bool>,
+    pub position_idx: Option<i64>,
 }
 
 pub struct UpdateOrderData {
@@ -79,6 +80,11 @@ pub trait ListActiveOrders {
 #[async_trait]
 pub trait PlaceActiveOrder {
     async fn place_active_order(&self, data: PlaceActiveOrderData) -> Result<Order>;
+}
+
+#[async_trait]
+pub trait PlaceActiveLinearOrder {
+    async fn place_active_linear_order(&self, data: PlaceActiveOrderData) -> Result<LinearOrder>;
 }
 
 #[async_trait]
@@ -123,6 +129,17 @@ impl PlaceActiveOrder for Client {
         let query: request::CreateOrder = data.into();
         let query = self.sign_query(query);
         let response: Response<Order> = self.post("/v2/private/order/create", &query).await?;
+        response.result()
+    }
+}
+
+#[async_trait]
+impl PlaceActiveLinearOrder for Client {
+    async fn place_active_linear_order(&self, data: PlaceActiveOrderData) -> Result<LinearOrder> {
+        let query: request::CreateOrder = data.into();
+        let query = self.sign_query(query);
+        let response: Response<LinearOrder> =
+            self.post("/private/linear/order/create", &query).await?;
         response.result()
     }
 }
@@ -229,6 +246,8 @@ mod request {
         pub sl_trigger_by: Option<TriggerPrice>,
         #[serde(skip_serializing_if = "Option::is_none")]
         pub reduce_only: Option<bool>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub position_idx: Option<i64>,
     }
 
     #[derive(Serialize)]
@@ -282,6 +301,7 @@ mod request {
                 tp_trigger_by: data.tp_trigger_by,
                 sl_trigger_by: data.sl_trigger_by,
                 reduce_only: data.reduce_only,
+                position_idx: data.position_idx,
             }
         }
     }
