@@ -52,7 +52,7 @@ pub enum OrderStatus {
     /// Matching engine has received the cancelation request but it may not be canceled successfuly
     PendingCancel,
     Untriggered,
-    Triggered
+    Triggered,
 }
 
 #[derive(Serialize, Deserialize, Copy, Clone, Debug, Eq, PartialEq)]
