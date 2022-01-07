@@ -70,7 +70,12 @@ Please do not hesitate to open an issue if you run into any problems, errors, ..
 - [x] cancel all active orders
 - [x] replace active order (**incomplete**)
 - [x] query active order (real-time)
-- [ ] conditional orders
+- [ ] place conditional order
+- [ ] get conditional order
+- [ ] cancel conditional order
+- [ ] cancel all conditional orders
+- [ ] replace conditional order
+- [ ] query conditional order (real-time)
 - [ ] position
 - [ ] risk limit
 - [ ] funding

@@ -63,6 +63,35 @@ pub struct PlaceActiveOrderData {
     pub stop_loss: Option<f64>,
     pub tp_trigger_by: Option<TriggerPrice>,
     pub sl_trigger_by: Option<TriggerPrice>,
+    //linear active specifics
+    pub reduce_only: Option<bool>,
+    pub position_idx: Option<i64>,
+    //conditional specifics
+    pub base_price: Option<String>,
+    pub stop_px: Option<String>,
+    pub trigger_by: Option<TriggerPrice>
+
+}
+
+#[derive(Debug, Default)]
+pub struct PlaceLinearConditionalOrderData {
+    pub symbol: String,
+    pub side: Side,
+    pub qty: f64,
+    pub order_type: OrderType,
+    pub price: Option<f64>,
+    pub time_in_force: TimeInForce,
+    pub close_on_trigger: bool,
+    pub order_link_id: Option<OrderLinkId>,
+    pub take_profit: Option<f64>,
+    pub stop_loss: Option<f64>,
+    pub tp_trigger_by: Option<TriggerPrice>,
+    pub sl_trigger_by: Option<TriggerPrice>,
+    //conditional specifics
+    pub base_price: f64,
+    pub stop_px: f64,
+    pub trigger_by: Option<TriggerPrice>,
+    //linear conditional specifics
     pub reduce_only: Option<bool>,
     pub position_idx: Option<i64>,
 }
@@ -111,6 +140,17 @@ pub trait QueryActiveOrder {
         symbol: &str,
     ) -> Result<Option<Order>>;
 }
+
+#[async_trait]
+pub trait PlaceConditionalOrder {
+    async fn place_conditional_order(&self, data: PlaceActiveOrderData) -> Result<ConditionalOrder>;
+}
+/*
+#[async_trait]
+pub trait PlaceLinearConditionalOrder {
+    async fn place_conditional_order(&self, data: PlaceActiveOrderData) -> Result<LinearConditionalOrder>;
+}
+*/
 
 #[async_trait]
 impl ListActiveOrders for Client {
@@ -213,6 +253,16 @@ impl QueryActiveOrder for Client {
     }
 }
 
+#[async_trait]
+impl PlaceConditionalOrder for Client {
+    async fn place_conditional_order(&self, data: PlaceActiveOrderData) -> Result<ConditionalOrder> {
+        let query: request::CreateOrder = data.into();
+        let query = self.sign_query(query);
+        let response: Response<ConditionalOrder> = self.post("/v2/private/stop-order/create", &query).await?;
+        response.result()
+    }
+}
+
 mod request {
     use super::*;
     use serde::Serialize;
@@ -248,6 +298,13 @@ mod request {
         pub reduce_only: Option<bool>,
         #[serde(skip_serializing_if = "Option::is_none")]
         pub position_idx: Option<i64>,
+        //conditional specifics
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub base_price: Option<String>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub stop_px: Option<String>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub trigger_by: Option<TriggerPrice>
     }
 
     #[derive(Serialize)]
@@ -302,6 +359,9 @@ mod request {
                 sl_trigger_by: data.sl_trigger_by,
                 reduce_only: data.reduce_only,
                 position_idx: data.position_idx,
+                base_price: data.base_price,
+                stop_px: data.stop_px,
+                trigger_by: data.trigger_by,
             }
         }
     }

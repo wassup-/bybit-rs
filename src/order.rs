@@ -295,6 +295,75 @@ pub struct LinearOrder {
     pub position_idx: i64,
 }
 
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct ConditionalOrder {
+    /// Conditional order ID. Once triggered the condition order creates active order with same ID
+    #[serde(rename = "stop_order_id")]
+    pub id: OrderId,
+    /// User id
+    pub user_id: UserId,
+    /// Customised order id
+    #[serde(rename = "order_link_id")]
+    pub link_id: OrderLinkId,
+    /// Order price
+    #[serde(deserialize_with = "string_or_number")]
+    pub price: f64,
+    /// Order quantity in USD.
+    pub qty: f64,
+    /// Symbol
+    pub symbol: String,
+    /// Side
+    pub side: Side,
+    /// Order status
+    pub order_status: OrderStatus,
+    /// Order type
+    pub order_type: OrderType,
+    /// Last execution price
+    #[serde(deserialize_with = "optional_string_or_number", default)]
+    pub last_exec_price: Option<f64>,
+    /// Time in force
+    pub time_in_force: TimeInForce,
+    /// Cumulative qty of trading
+    #[serde(deserialize_with = "string_or_number")]
+    pub cum_exec_qty: f64,
+    /// Cumulative value of trading
+    #[serde(deserialize_with = "optional_string_or_number", default)]
+    pub cum_exec_value: Option<f64>,
+    /// Cumulative trading fees
+    #[serde(deserialize_with = "optional_string_or_number", default)]
+    pub cum_exec_fee: Option<f64>,
+    /// Reduce only means close order, false means open position
+    pub reduce_only: bool,
+    /// Can only reduce your position
+    pub close_on_trigger: bool,
+    /// Creation time
+    pub created_at: String,
+    /* Update time (not in docs for inverse?)
+    pub updated_at: String, */
+    /// Take profit price
+    #[serde(deserialize_with = "string_or_number")]
+    pub take_profit: f64,
+    /// Stop loss price
+    #[serde(deserialize_with = "string_or_number")]
+    pub stop_loss: f64,
+    /// Take profit trigger price type
+    pub tp_trigger_by: TriggerPrice,
+    /// Stop loss trigger price type
+    pub sl_trigger_by: TriggerPrice,
+    /// Position idx
+    pub position_idx: i64,
+    /// Order trigger price type
+    pub trigger_by: TriggerPrice,
+    /// Market price at placing order
+    pub base_price: String,
+    /// Remark
+    pub remark: String,
+    /// Reject reason (maybe change to enum later? bad api docs)
+    pub reject_reason: String,
+    /// Trigger price
+    pub stop_px: String,
+}
+
 impl std::fmt::Display for OrderId {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.0)
