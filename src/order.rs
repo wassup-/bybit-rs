@@ -51,6 +51,8 @@ pub enum OrderStatus {
     Cancelled,
     /// Matching engine has received the cancelation request but it may not be canceled successfuly
     PendingCancel,
+    Untriggered,
+    Triggered
 }
 
 #[derive(Serialize, Deserialize, Copy, Clone, Debug, Eq, PartialEq)]
@@ -182,6 +184,7 @@ pub struct Order {
     #[serde(deserialize_with = "string_or_number")]
     pub price: f64,
     /// Order quantity in USD.
+    #[serde(deserialize_with = "string_or_number")]
     pub qty: f64,
     /// Symbol
     pub symbol: String,
@@ -250,6 +253,7 @@ pub struct LinearOrder {
     #[serde(deserialize_with = "string_or_number")]
     pub price: f64,
     /// Order quantity in USD.
+    #[serde(deserialize_with = "string_or_number")]
     pub qty: f64,
     /// Symbol
     pub symbol: String,
@@ -309,6 +313,7 @@ pub struct ConditionalOrder {
     #[serde(deserialize_with = "string_or_number")]
     pub price: f64,
     /// Order quantity in USD.
+    #[serde(deserialize_with = "string_or_number")]
     pub qty: f64,
     /// Symbol
     pub symbol: String,
@@ -323,23 +328,16 @@ pub struct ConditionalOrder {
     pub last_exec_price: Option<f64>,
     /// Time in force
     pub time_in_force: TimeInForce,
-    /// Cumulative qty of trading
-    #[serde(deserialize_with = "string_or_number")]
-    pub cum_exec_qty: f64,
-    /// Cumulative value of trading
-    #[serde(deserialize_with = "optional_string_or_number", default)]
-    pub cum_exec_value: Option<f64>,
-    /// Cumulative trading fees
-    #[serde(deserialize_with = "optional_string_or_number", default)]
-    pub cum_exec_fee: Option<f64>,
-    /// Reduce only means close order, false means open position
+    /// Reduce only
     pub reduce_only: bool,
     /// Can only reduce your position
     pub close_on_trigger: bool,
     /// Creation time
-    pub created_at: String,
-    /* Update time (not in docs for inverse?)
-    pub updated_at: String, */
+    pub created_time: Option<String>,
+    /// Update time
+    pub updated_time: Option<String>,
+    /// Update at (for inverse)
+    pub updated_at: Option<String>,
     /// Take profit price
     #[serde(deserialize_with = "string_or_number")]
     pub take_profit: f64,
@@ -357,11 +355,11 @@ pub struct ConditionalOrder {
     /// Market price at placing order
     pub base_price: String,
     /// Remark
-    pub remark: String,
+    pub remark: Option<String>,
     /// Reject reason (maybe change to enum later? bad api docs)
-    pub reject_reason: String,
+    pub reject_reason: Option<String>,
     /// Trigger price
-    pub stop_px: String,
+    pub stop_px: Option<String>,
 }
 
 impl std::fmt::Display for OrderId {
