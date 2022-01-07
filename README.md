@@ -65,17 +65,14 @@ Please do not hesitate to open an issue if you run into any problems, errors, ..
 
 ##### Account Data Endpoints
 - [x] place active order
+- [x] place active linear order
 - [x] get active order
 - [x] cancel active order
 - [x] cancel all active orders
 - [x] replace active order (**incomplete**)
 - [x] query active order (real-time)
-- [ ] place conditional order
-- [ ] get conditional order
-- [ ] cancel conditional order
-- [ ] cancel all conditional orders
-- [ ] replace conditional order
-- [ ] query conditional order (real-time)
+- [x] place conditional order
+- [x] place conditional linear order
 - [ ] position
 - [ ] risk limit
 - [ ] funding
