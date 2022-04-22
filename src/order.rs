@@ -51,6 +51,8 @@ pub enum OrderStatus {
     Cancelled,
     /// Matching engine has received the cancelation request but it may not be canceled successfuly
     PendingCancel,
+    Untriggered,
+    Triggered,
 }
 
 #[derive(Serialize, Deserialize, Copy, Clone, Debug, Eq, PartialEq)]
@@ -182,6 +184,7 @@ pub struct Order {
     #[serde(deserialize_with = "string_or_number")]
     pub price: f64,
     /// Order quantity in USD.
+    #[serde(deserialize_with = "string_or_number")]
     pub qty: f64,
     /// Symbol
     pub symbol: String,
@@ -250,6 +253,7 @@ pub struct LinearOrder {
     #[serde(deserialize_with = "string_or_number")]
     pub price: f64,
     /// Order quantity in USD.
+    #[serde(deserialize_with = "string_or_number")]
     pub qty: f64,
     /// Symbol
     pub symbol: String,
@@ -293,6 +297,69 @@ pub struct LinearOrder {
     pub sl_trigger_by: TriggerPrice,
     /// Position idx
     pub position_idx: i64,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct ConditionalOrder {
+    /// Conditional order ID. Once triggered the condition order creates active order with same ID
+    #[serde(rename = "stop_order_id")]
+    pub id: OrderId,
+    /// User id
+    pub user_id: UserId,
+    /// Customised order id
+    #[serde(rename = "order_link_id")]
+    pub link_id: OrderLinkId,
+    /// Order price
+    #[serde(deserialize_with = "string_or_number")]
+    pub price: f64,
+    /// Order quantity in USD.
+    #[serde(deserialize_with = "string_or_number")]
+    pub qty: f64,
+    /// Symbol
+    pub symbol: String,
+    /// Side
+    pub side: Side,
+    /// Order status
+    pub order_status: OrderStatus,
+    /// Order type
+    pub order_type: OrderType,
+    /// Last execution price
+    #[serde(deserialize_with = "optional_string_or_number", default)]
+    pub last_exec_price: Option<f64>,
+    /// Time in force
+    pub time_in_force: TimeInForce,
+    /// Reduce only
+    pub reduce_only: bool,
+    /// Can only reduce your position
+    pub close_on_trigger: bool,
+    /// Creation time
+    pub created_time: Option<String>,
+    /// Update time
+    pub updated_time: Option<String>,
+    /// Update at (for inverse)
+    pub updated_at: Option<String>,
+    /// Take profit price
+    #[serde(deserialize_with = "string_or_number")]
+    pub take_profit: f64,
+    /// Stop loss price
+    #[serde(deserialize_with = "string_or_number")]
+    pub stop_loss: f64,
+    /// Take profit trigger price type
+    pub tp_trigger_by: TriggerPrice,
+    /// Stop loss trigger price type
+    pub sl_trigger_by: TriggerPrice,
+    /// Position idx
+    pub position_idx: i64,
+    /// Order trigger price type
+    pub trigger_by: TriggerPrice,
+    /// Market price at placing order
+    pub base_price: String,
+    /// Remark
+    pub remark: Option<String>,
+    /// Reject reason (maybe change to enum later? bad api docs)
+    pub reject_reason: Option<String>,
+    /// Trigger price
+    pub stop_px: Option<String>,
 }
 
 impl std::fmt::Display for OrderId {
