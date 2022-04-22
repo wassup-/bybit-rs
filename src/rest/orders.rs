@@ -63,10 +63,10 @@ pub struct PlaceActiveOrderData {
     pub stop_loss: Option<f64>,
     pub tp_trigger_by: Option<TriggerPrice>,
     pub sl_trigger_by: Option<TriggerPrice>,
-    //linear active specifics
+    // linear active specifics
     pub reduce_only: Option<bool>,
     pub position_idx: Option<i64>,
-    //conditional specifics
+    // conditional specifics
     pub base_price: Option<String>,
     pub stop_px: Option<String>,
     pub trigger_by: Option<TriggerPrice>,
@@ -86,11 +86,11 @@ pub struct PlaceLinearConditionalOrderData {
     pub stop_loss: Option<f64>,
     pub tp_trigger_by: Option<TriggerPrice>,
     pub sl_trigger_by: Option<TriggerPrice>,
-    //conditional specifics
+    // conditional specifics
     pub base_price: f64,
     pub stop_px: f64,
     pub trigger_by: Option<TriggerPrice>,
-    //linear conditional specifics
+    // linear conditional specifics
     pub reduce_only: bool,
     pub position_idx: Option<i64>,
 }
@@ -315,6 +315,7 @@ mod request {
         pub tp_trigger_by: Option<TriggerPrice>,
         #[serde(skip_serializing_if = "Option::is_none")]
         pub sl_trigger_by: Option<TriggerPrice>,
+        // linear conditional specifics
         #[serde(skip_serializing_if = "Option::is_none")]
         pub reduce_only: Option<bool>,
         #[serde(skip_serializing_if = "Option::is_none")]
