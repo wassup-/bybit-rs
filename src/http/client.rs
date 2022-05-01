@@ -6,6 +6,7 @@ pub const MAINNET_BYBIT: &str = "https://api.bybit.com/";
 pub const MAINNET_BYTICK: &str = "https://api.bytick.com/";
 pub const TESTNET: &str = "https://api-testnet.bybit.com/";
 
+#[derive(Debug, Clone)]
 pub struct Client {
     api_key: String,
     api_secret: String,
